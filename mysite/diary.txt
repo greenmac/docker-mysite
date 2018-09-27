@@ -1,0 +1,14 @@
+$ django-admin startproject mysite(<--輸入文件名)
+$ python manage.py runserver(啟動網站)
+$ python manage.py help(找尋指令)
+$ python manage.py migrate(建立數據庫)
+$ python manage.py createsuperuser(建立管理者)
+user:hulk
+password:hulk1234
+$ python manage.py startapp news(<--輸入app名稱)
+$ python manage.py makemigrations(有新的app時,要建立新的數據遷移) -> python manage.py migrate(連續技)
+$ pip freeze(凍結)
+
+
+2018/09/27
+07,
