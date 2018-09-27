@@ -1,15 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ blog.title }}</title>
-</head>
-<body>
-    <div>
-        <a href="{% url 'home' %}">
-            <h3>個人網站部落格</h3>
-        </a>
-    </div>
+{% extends 'base.html' %}
+
+{# 頁面標題 #}
+{% block title %}
+    {{ blog.title }}
+{% endblock %}
+
+{# 頁面內容 #}
+{% block content %}
     <h3>{{ blog.title }}</h3>
     <p>作者:{{ blog.author }}</p>
     <p>發表日期:{{ blog.created_time|date:"Y-m-d H:i:s" }}</p>
@@ -19,5 +16,4 @@
         </a>
     </p>
     <p>{{ blog.content }}</p>
-</body>
-</html>
+{% endblock %}

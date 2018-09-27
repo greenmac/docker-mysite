@@ -1,16 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title>{{ blog_type.type_name }}</title>
-</head>
-<body>
-    <div>
-        <a href="{% url 'home' %}">
-                <h3>個人網站部落格</h3>
-            </a>
-        </div>
-    <hr>
+{% extends 'base.html' %}
+
+{# 頁面標題 #}
+{% block title %}
+    {{ blog_type.type_name }}
+{% endblock %}
+
+{# 頁面內容 #}
+{% block content %}
     <h3>{{ blog_type.type_name }}</h3>
     <p>一共有{{ blogs|length }}篇文章</p>
     {% for blog in blogs %}
@@ -21,5 +17,4 @@
     {% empty %}
         <p>-- 暫無文章 --</p>
     {% endfor %}
-</body>
-</html>
+{% endblock %}
