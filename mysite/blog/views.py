@@ -3,6 +3,7 @@ from django.core.paginator import Paginator
 from django.conf import settings
 from django.db.models import Count
 from .models import Blog, BlogType
+from read_statistics.utils import readStatisticsOnceRead
 
 # each_page_blogs_num = 2  # 每2篇進行分頁
 
@@ -60,14 +61,12 @@ def blogWithDate(request, year, month):
 
 def blogDetail(request, blog_pk):
     blog = get_object_or_404(Blog, pk=blog_pk)
-    if not request.COOKIES.get('blog_%s_readed' % blog_pk):       
-        blog.readed_num += 1
-        blog.save()
+    read_cookie_key = readStatisticsOnceRead(request, blog)
 
     context = {}
     context['previous_blog'] = Blog.objects.filter(created_time__gt=blog.created_time).last()
     context['next_blog'] = Blog.objects.filter(created_time__lt=blog.created_time).first()
     context['blog'] = blog
     response = render_to_response('blog/blog_detail.html', context) # 響應
-    response.set_cookie('blog_%s_readed' % blog_pk, 'true') # 未設置max_age的話, 關掉瀏覽器再開就會再算一次
+    response.set_cookie(read_cookie_key, 'true') # 閱讀cookie標記
     return response
