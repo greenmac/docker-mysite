@@ -31,3 +31,4 @@ for i in range(1, 31):
 17-django-ckeditor,
 18-read-count,
 19-U-read-count(contenttypes),
+20-SevenDaysCount,
