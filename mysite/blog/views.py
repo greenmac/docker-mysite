@@ -1,6 +1,7 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.core.paginator import Paginator
 from django.conf import settings
+from django.db.models import Count
 from .models import Blog, BlogType
 
 # each_page_blogs_num = 2  # 每2篇進行分頁
@@ -24,12 +25,19 @@ def getBlogListCommonDate(request, blog_all_list):
     if page_range[-1] != paginator.num_pages:
         page_range.append(paginator.num_pages)
     
+    # 獲取日期歸檔對應的文章數量
+    blog_dates = Blog.objects.dates('created_time', 'month', order='DESC')
+    blog_dates_dict = {}
+    for blog_date in blog_dates:
+        blog_count = Blog.objects.filter(created_time__year=blog_date.year, created_time__month=blog_date.month).count()
+        blog_dates_dict[blog_date] = blog_count
+
     context = {}
     context['blogs'] = page_of_blogs.object_list
     context['page_of_blogs'] = page_of_blogs
     context['page_range'] = page_range
-    context['blog_types'] = BlogType.objects.all()
-    context['blog_dates'] = Blog.objects.dates('created_time', 'month', order='DESC')
+    context['blog_types'] = BlogType.objects.annotate(blog_count=Count('blog')) # annotate(標註文字用)
+    context['blog_dates'] = blog_dates_dict
     return context
 
 def blogList(request):
