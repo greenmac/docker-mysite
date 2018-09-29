@@ -2,8 +2,10 @@ from django.shortcuts import get_object_or_404, render
 from django.core.paginator import Paginator
 from django.conf import settings
 from django.db.models import Count
+from django.contrib.contenttypes.models import ContentType
 from .models import Blog, BlogType
 from read_statistics.utils import readStatisticsOnceRead
+from comment.models import Comment
 
 # each_page_blogs_num = 2  # 每2篇進行分頁
 
@@ -62,11 +64,14 @@ def blogWithDate(request, year, month):
 def blogDetail(request, blog_pk):
     blog = get_object_or_404(Blog, pk=blog_pk)
     read_cookie_key = readStatisticsOnceRead(request, blog)
+    blog_content_type = ContentType.objects.get_for_model(blog)
+    comments = Comment.objects.filter(content_type=blog_content_type, object_id=blog.pk)
 
     context = {}
     context['previous_blog'] = Blog.objects.filter(created_time__gt=blog.created_time).last()
     context['next_blog'] = Blog.objects.filter(created_time__lt=blog.created_time).first()
     context['blog'] = blog
+    context['comments']= comments
     response = render(request, 'blog/blog_detail.html', context) # 響應
     response.set_cookie(read_cookie_key, 'true') # 閱讀cookie標記
     return response

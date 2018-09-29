@@ -1,10 +1,11 @@
 import datetime
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect # redirect重新定向
 from django.contrib.contenttypes.models import ContentType
 from django.utils import timezone
 from django.db.models import Sum
 from django.core.cache import cache
 from django.contrib import auth
+from django.urls import reverse # 返回
 from read_statistics.utils import getSevenDaysReadDate, getTodayHotDate, getYesterdayHotDate
 from blog.models import Blog
 
@@ -43,8 +44,9 @@ def login(request):
     username = request.POST.get('username', '')
     password = request.POST.get('password', '')
     user = auth.authenticate(request, username=username, password=password)
+    referer = request.META.get('HTTP_REFERER', reverse('home')) # 回到登入的那頁
     if user is not None:
         auth.login(request, user)
-        return redirect('/')
+        return redirect(referer)
     else:
         return render(request, 'error.html', {'message':'帳號或密碼不正確'})

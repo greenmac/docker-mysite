@@ -9,4 +9,3 @@ urlpatterns = [
     path('type/<int:blog_type_pk>', views.blogsWithType, name='blogs_with_type'),
     path('date/<int:year>/<int:month>', views.blogWithDate, name='blog_with_date'),
 ]
-
