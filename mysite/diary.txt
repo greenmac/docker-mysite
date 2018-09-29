@@ -38,3 +38,4 @@ $ python manage.py createcachetable(創建緩存表)
 21-hot_bolg and cache,
 22-login,
 23-form,
+24-register,

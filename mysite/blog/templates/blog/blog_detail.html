@@ -57,15 +57,10 @@
                             <input type="submit" value="提交評論" class="btn btn-primary" style="float:right">
                         </form>
                     {% else %}
-                        未登入, 無法提交評論
-                        <form action="{% url 'login' %}" method="POST">
-                            {% csrf_token %}
-                            <span>帳號</span>
-                            <input type="text" name="username">
-                            <span>密碼</span>
-                            <input type="password" name="password">
-                            <input type="submit" value="登入">
-                        </form>
+                        您未登入, 無法提交評論
+                        <a class="btn btn-primary" href="{% url 'login' %}?from={{ request.get_full_path }}">登入</a>
+                        <span> or </span>
+                        <a class="btn btn-danger"href="{% url 'register' %}?from={{ request.get_full_path }}">註冊</a>
                     {% endif %}
                 </div>
                 <div class="comment-area">
