@@ -41,5 +41,24 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-xs-10 col-xs-offset-1">
+                <div style="margin-top:2em;border:1px dashed;padding:2em;">
+                    提交評論區
+                    {% if user.is_authenticated %}
+                        已登錄
+                    {% else %}
+                        未登入
+                        <form action="{% url 'login' %}" method="POST">
+                            {% csrf_token %}
+                            <input type="text" name="username">
+                            <input type="password" name="password">
+                            <input type="submit" value="登入">
+                        </form>
+                    {% endif %}
+                </div>
+                <div style="margin-top:2em;border:1px dashed;padding:2em;">評論列表區</div>
+            </div>
+        </div>
     </div>
 {% endblock %}

@@ -1,4 +1,4 @@
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.core.paginator import Paginator
 from django.conf import settings
 from django.db.models import Count
@@ -44,20 +44,20 @@ def getBlogListCommonDate(request, blog_all_list):
 def blogList(request):
     blog_all_list = Blog.objects.all()
     context = getBlogListCommonDate(request, blog_all_list)
-    return render_to_response('blog/blog_list.html', context)
+    return render(request, 'blog/blog_list.html', context)
 
 def blogsWithType(request, blog_type_pk):
     blog_type = get_object_or_404(BlogType, pk=blog_type_pk)
     blog_all_list = Blog.objects.filter(blog_type=blog_type)
     context = getBlogListCommonDate(request, blog_all_list)
     context['blog_type'] = blog_type
-    return render_to_response('blog/blogs_with_type.html', context)
+    return render(request, 'blog/blogs_with_type.html', context)
 
 def blogWithDate(request, year, month):
     blog_all_list = Blog.objects.filter(created_time__year=year, created_time__month=month)
     context = getBlogListCommonDate(request, blog_all_list)
     context['blog_with_date'] = '%s年%s月' % (year, month);
-    return render_to_response('blog/blogs_with_date.html', context)
+    return render(request, 'blog/blogs_with_date.html', context)
 
 def blogDetail(request, blog_pk):
     blog = get_object_or_404(Blog, pk=blog_pk)
@@ -67,6 +67,6 @@ def blogDetail(request, blog_pk):
     context['previous_blog'] = Blog.objects.filter(created_time__gt=blog.created_time).last()
     context['next_blog'] = Blog.objects.filter(created_time__lt=blog.created_time).first()
     context['blog'] = blog
-    response = render_to_response('blog/blog_detail.html', context) # 響應
+    response = render(request, 'blog/blog_detail.html', context) # 響應
     response.set_cookie(read_cookie_key, 'true') # 閱讀cookie標記
     return response
