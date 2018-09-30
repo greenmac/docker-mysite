@@ -6,6 +6,8 @@ from django.contrib.contenttypes.models import ContentType
 from .models import Blog, BlogType
 from read_statistics.utils import readStatisticsOnceRead
 from comment.models import Comment
+from .serializers import BlogSerializer
+from rest_framework import viewsets
 
 # each_page_blogs_num = 2  # 每2篇進行分頁
 
@@ -75,3 +77,8 @@ def blogDetail(request, blog_pk):
     response = render(request, 'blog/blog_detail.html', context) # 響應
     response.set_cookie(read_cookie_key, 'true') # 閱讀cookie標記
     return response
+
+
+class BlogViewSet(viewsets.ModelViewSet):
+    queryset = Blog.objects.all()
+    serializer_class = BlogSerializer
